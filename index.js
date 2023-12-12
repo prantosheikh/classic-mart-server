@@ -47,6 +47,7 @@ async function run() {
          res.send(result)
       })
 
+
       // Get offers product
       app.get('/offers', async (req, res) => {
          const result = await offersCollections.find().toArray()
