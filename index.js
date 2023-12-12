@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 3000;
 
 const corsOptions = {
-  origin: true,
+   origin: true,
 };
 
 app.use(cors(corsOptions));
@@ -17,45 +17,59 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+   serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+   },
 });
 
-
-
 async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
+   try {
+      // Connect the client to the server	(optional starting in v4.7)
+      await client.connect();
+      // Send a ping to confirm a successful connection
+
+      const bestSellerCollections = client.db("ClassicDB").collection("Products");
+      const offersCollections = client.db("ClassicDB").collection("Offers");
 
 
-    app.post('/jwt', (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1h"})
-      res.send({token})
-    })
+
+      app.post('/jwt', (req, res) => {
+         const user = req.body;
+         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" })
+         res.send({ token })
+      })
+
+      //  Get best_seller product
+      app.get('/best_seller', async (req, res) => {
+         const result = await bestSellerCollections.find().toArray()
+         res.send(result)
+      })
+
+      // Get offers product
+      app.get('/offers', async (req, res) => {
+         const result = await offersCollections.find().toArray()
+         res.send(result)
+      })
 
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
-  }
+      await client.db("admin").command({ ping: 1 });
+      console.log(
+         "Pinged your deployment. You successfully connected to MongoDB!"
+      );
+   } finally {
+      // Ensures that the client will close when you finish/error
+      // await client.close();
+   }
 }
 
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Classic Mart Server Site Running");
+   res.send("Classic Mart Server Site Running");
 });
 
 app.listen(port, () => {
-  console.log(`Server Running On PORT ${port}`);
+   console.log(`Server Running On PORT ${port}`);
 });
