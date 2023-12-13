@@ -35,6 +35,7 @@ async function run() {
       const summerCollections = client.db("ClassicDB").collection("Summer");
       const bundleCollections = client.db("ClassicDB").collection("Neck Bundle Offer");
       const solidPOLOCollections = client.db("ClassicDB").collection("SolidPOLO");
+      const fullSleevesCollections = client.db("ClassicDB").collection("Round Neck Full Sleeves");
 
 
 
@@ -68,6 +69,10 @@ async function run() {
       // Get Round Neck Bundle Offer IMAGE
       app.get('/bundle_offer', async (req, res) => {
          const result = await bundleCollections.find().toArray()
+         res.send(result)
+      })
+      app.get('/full_leeves', async (req, res) => {
+         const result = await fullSleevesCollections.find().toArray()
          res.send(result)
       })
 
