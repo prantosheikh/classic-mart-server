@@ -36,6 +36,7 @@ async function run() {
       const bundleCollections = client.db("ClassicDB").collection("Neck Bundle Offer");
       const solidPOLOCollections = client.db("ClassicDB").collection("SolidPOLO");
       const fullSleevesCollections = client.db("ClassicDB").collection("Round Neck Full Sleeves");
+      const dhakaCollections = client.db("ClassicDB").collection("Dhaka");
 
 
 
@@ -73,6 +74,10 @@ async function run() {
       })
       app.get('/full_leeves', async (req, res) => {
          const result = await fullSleevesCollections.find().toArray()
+         res.send(result)
+      })
+      app.get('/dhaka', async (req, res) => {
+         const result = await dhakaCollections.find().toArray()
          res.send(result)
       })
 
