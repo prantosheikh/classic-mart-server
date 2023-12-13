@@ -33,6 +33,8 @@ async function run() {
       const bestSellerCollections = client.db("ClassicDB").collection("Products");
       const offersCollections = client.db("ClassicDB").collection("Offers");
       const summerCollections = client.db("ClassicDB").collection("Summer");
+      const bundleCollections = client.db("ClassicDB").collection("Neck Bundle Offer");
+      const solidPOLOCollections = client.db("ClassicDB").collection("SolidPOLO");
 
 
 
@@ -47,6 +49,11 @@ async function run() {
          const result = await bestSellerCollections.find().toArray()
          res.send(result)
       })
+      //  Get best_seller product
+      app.get('/solid_polo', async (req, res) => {
+         const result = await solidPOLOCollections.find().toArray()
+         res.send(result)
+      })
 
       // Get offers product
       app.get('/offers', async (req, res) => {
@@ -56,6 +63,11 @@ async function run() {
       // Get Summer product
       app.get('/summer', async (req, res) => {
          const result = await summerCollections.find().toArray()
+         res.send(result)
+      })
+      // Get Round Neck Bundle Offer IMAGE
+      app.get('/bundle_offer', async (req, res) => {
+         const result = await bundleCollections.find().toArray()
          res.send(result)
       })
 
