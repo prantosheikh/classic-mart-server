@@ -32,6 +32,7 @@ async function run() {
 
       const bestSellerCollections = client.db("ClassicDB").collection("Products");
       const offersCollections = client.db("ClassicDB").collection("Offers");
+      const summerCollections = client.db("ClassicDB").collection("Summer");
 
 
 
@@ -52,6 +53,11 @@ async function run() {
          const result = await offersCollections.find().toArray()
          res.send(result)
       })
+      // Get Summer product
+      app.get('/summer', async (req, res) => {
+         const result = await summerCollections.find().toArray()
+         res.send(result)
+      })
 
       app.get("/collections/:offer", async (req, res) => {
          try {
@@ -68,7 +74,9 @@ async function run() {
             res.status(500).send("Internal Server Error");
          }
       });
-      
+
+
+
 
       await client.db("admin").command({ ping: 1 });
       console.log(
