@@ -47,13 +47,27 @@ async function run() {
          res.send(result)
       })
 
-
       // Get offers product
       app.get('/offers', async (req, res) => {
          const result = await offersCollections.find().toArray()
          res.send(result)
       })
 
+      app.get("/collections/:offer", async (req, res) => {
+         try {
+            const offerName = req?.params?.offer
+            const offers = await bestSellerCollections.find().toArray();
+
+            // Filter the result array based on the condition
+            const result = offers.filter(offer => offer?.product?.offer == offerName);
+            console.log(result)
+            res.send(result);
+
+         } catch (error) {
+            console.error(error);
+            res.status(500).send("Internal Server Error");
+         }
+      });
 
       await client.db("admin").command({ ping: 1 });
       console.log(
