@@ -10,7 +10,7 @@ const corsOptions = {
    origin: true,
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.efhcwjr.mongodb.net/?retryWrites=true&w=majority`;
@@ -37,6 +37,7 @@ async function run() {
       const solidPOLOCollections = client.db("ClassicDB").collection("SolidPOLO");
       const fullSleevesCollections = client.db("ClassicDB").collection("Round Neck Full Sleeves");
       const dhakaCollections = client.db("ClassicDB").collection("Dhaka");
+      const newProductsCollections = client.db("ClassicDB").collection("newProducts");
 
 
 
@@ -80,6 +81,16 @@ async function run() {
          const result = await dhakaCollections.find().toArray()
          res.send(result)
       })
+      // Handle POST request for form submission
+      app.post("/products", async (req, res) => {
+         const products = req.body;
+         // console.log(instructorsClass);
+         const result = await newProductsCollections.insertOne(
+            products
+         );
+         res.send(result);
+      });
+
 
       app.get("/collections/:offer", async (req, res) => {
          try {
